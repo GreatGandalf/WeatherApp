@@ -57,28 +57,25 @@ public class SimpleFileServer {
           bytesRead = is.read(mybytearray,0,mybytearray.length);
           current = bytesRead;
           
-          bos.write(mybytearray, 0 , bytesRead);
-          System.out.println("File " + newfile + " downloaded (" + bytesRead + " bytes read)");
-          
-//          do {
-//              bytesRead =
-//                 is.read(mybytearray, 0, mybytearray.length);
-//              bos.write(mybytearray, 0 , bytesRead);
-//              System.out.println("File " + newfile
-//                  + " downloaded (" + bytesRead + " bytes read)");
-//              
-//              bos.flush();
-//              fos.flush();
-//              fos.close();
-//              bos.close();
-//              
-//              newfile = "D:/weather/"+getCurrentTimeStamp()+".xml";
-//              
-//              fos = new FileOutputStream(newfile);
-//              bos = new BufferedOutputStream(fos);
-//              //bos.write(mybytearray, 0 , current); //Extra line added to continuously write to the xml file instead of only at the end of the file
-//              //if(bytesRead >= 0) current += bytesRead;
-//           } while(bytesRead > -1);
+          do {
+              bytesRead =
+                 is.read(mybytearray, 0, mybytearray.length);
+              bos.write(mybytearray, 0 , bytesRead);
+              System.out.println("File " + newfile
+                  + " downloaded (" + bytesRead + " bytes read)");
+              
+              bos.flush();
+              fos.flush();
+              fos.close();
+              bos.close();
+              
+              newfile = "D:/weather/"+getCurrentTimeStamp()+".xml";
+              
+              fos = new FileOutputStream(newfile);
+              bos = new BufferedOutputStream(fos);
+              //bos.write(mybytearray, 0 , current); //Extra line added to continuously write to the xml file instead of only at the end of the file
+              //if(bytesRead >= 0) current += bytesRead;
+           } while(bytesRead > -1);
         }
         finally {
           if (bis != null) bis.close();
