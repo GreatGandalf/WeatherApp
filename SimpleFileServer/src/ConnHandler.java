@@ -49,7 +49,7 @@ public class ConnHandler implements Runnable{
 				bos = new BufferedOutputStream(fos);
 				bytesRead = is.read(mybytearray,0,mybytearray.length);
 				bos.write(mybytearray, 0 , bytesRead);
-				System.out.println("File " + newfile + " downloaded (" + bytesRead + " bytes read)");
+				//System.out.println("File " + newfile + " downloaded (" + bytesRead + " bytes read)");
             
 				bos.flush();
 				fos.flush();

@@ -41,12 +41,14 @@ public class SimpleFileServer {
         System.out.println("Waiting...");
         try {
           sock = servsock.accept();
-          System.out.println("Accepted connection : " + sock);
+          System.out.println("Accepted connection: " + sock);
           // send file
           Runnable runnable = new ConnHandler(sock,threadNumber); // or an anonymous class, or lambda...
 
           Thread thread = new Thread(runnable);
           thread.start();
+          
+          System.out.println("Started thread number: " + threadNumber);
           
           threadNumber++;
         }
