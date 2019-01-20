@@ -29,16 +29,10 @@ public class SimpleFileServer {
 	}
 
   public static void main (String [] args ) throws IOException {
-    FileInputStream fis = null;
-    BufferedInputStream bis = null;
-    OutputStream os = null;
     ServerSocket servsock = null;
     Socket sock = null;
     
-    int bytesRead;
-    int current = 0;
-    FileOutputStream fos = null;
-    BufferedOutputStream bos = null;
+    int threadNumber = 0;
     
     
     try {
@@ -49,40 +43,15 @@ public class SimpleFileServer {
           sock = servsock.accept();
           System.out.println("Accepted connection : " + sock);
           // send file
-          String newfile = "D:/weather/"+getCurrentTimeStamp()+".xml";
-          byte [] mybytearray  = new byte [FILE_SIZE];
-          InputStream is = sock.getInputStream();
-          fos = new FileOutputStream(newfile);
-          bos = new BufferedOutputStream(fos);
-          bytesRead = is.read(mybytearray,0,mybytearray.length);
-          current = bytesRead;
+          Runnable runnable = new ConnHandler(sock,threadNumber); // or an anonymous class, or lambda...
+
+          Thread thread = new Thread(runnable);
+          thread.start();
           
-          do {
-              bytesRead =
-                 is.read(mybytearray, 0, mybytearray.length);
-              bos.write(mybytearray, 0 , bytesRead);
-              System.out.println("File " + newfile
-                  + " downloaded (" + bytesRead + " bytes read)");
-              
-              bos.flush();
-              fos.flush();
-              fos.close();
-              bos.close();
-              
-              newfile = "D:/weather/"+getCurrentTimeStamp()+".xml";
-              
-              fos = new FileOutputStream(newfile);
-              bos = new BufferedOutputStream(fos);
-              //bos.write(mybytearray, 0 , current); //Extra line added to continuously write to the xml file instead of only at the end of the file
-              //if(bytesRead >= 0) current += bytesRead;
-           } while(bytesRead > -1);
+          threadNumber++;
         }
         finally {
-          if (bis != null) bis.close();
-          if (os != null) os.close();
-          if (fos != null) fos.close();
-          if (bos != null) bos.close();
-          if (sock != null) sock.close();
+        	
         }
       }
     }
