@@ -14,14 +14,14 @@ import java.util.Date;
 
 public class SimpleFileServer {
 
-  public final static int SOCKET_PORT = 13267;  // you may change this
+  public final static int SOCKET_PORT = 5056;  // you may change this
   
   public static final String
   FILE_TO_RECEIVED = "D:/weather/weather.xml";  // you may change this, I give a
                                                        // different name because i don't want to
                                                        // overwrite the one used by server...
 
-  public final static int FILE_SIZE = 6022386; // file size temporary hard coded
+  public final static int FILE_SIZE = 5000; // file size temporary hard coded
                                           // should bigger than the file to be downloaded
   
   public static String getCurrentTimeStamp() {

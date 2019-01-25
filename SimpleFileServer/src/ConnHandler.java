@@ -10,10 +10,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class ConnHandler implements Runnable{
 	
-	public final static int FILE_SIZE = 6022386;
+	public final static int FILE_SIZE = 5000;
 	
 	FileInputStream fis = null;
     BufferedInputStream bis = null;
@@ -34,7 +35,7 @@ public class ConnHandler implements Runnable{
     }
 	
 	
-	public static String getCurrentTimeStamp() {
+	public String getCurrentTimeStamp() {
 	    return new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(new Date());
 	}
 
@@ -42,7 +43,7 @@ public class ConnHandler implements Runnable{
 	public void run() {
 		while(true) {
 			try {
-				String newfile = "D:/weather/"+threadName+"_"+getCurrentTimeStamp()+".xml";
+				String newfile = "C:/weather/"+threadName+"_"+getCurrentTimeStamp()+".xml";
 				byte [] mybytearray  = new byte [FILE_SIZE];
 				InputStream is = sock.getInputStream();
 				fos = new FileOutputStream(newfile);
@@ -55,7 +56,11 @@ public class ConnHandler implements Runnable{
 				fos.flush();
 				fos.close();
 				bos.close();
+				TimeUnit.SECONDS.sleep(60);
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
