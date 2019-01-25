@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class CountryFilter {
 	
-	private String[] countries = {"UNITED STATES","FRANCE"};
+	private String[] countries = {"UNITED STATES","GERMANY","UNITED KINGDOM","SPAIN","FRANCE","INDIA","CHINA","BURMA"};
 	
 	public ArrayList<String> ids = new ArrayList<String>();
 	
