@@ -29,6 +29,10 @@ public class SimpleFileServer {
 	}
 
   public static void main (String [] args ) throws IOException {
+	  
+	CountryFilter filter1 = new CountryFilter();
+	filter1.testFile();
+	
     ServerSocket servsock = null;
     Socket sock = null;
     
