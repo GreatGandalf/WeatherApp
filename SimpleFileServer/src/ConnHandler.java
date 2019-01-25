@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ConnHandler implements Runnable{
 	
-	public final static int FILE_SIZE = 5000;
+	public final int FILE_SIZE = 5000;
 	
 	FileInputStream fis = null;
     BufferedInputStream bis = null;
@@ -28,6 +28,7 @@ public class ConnHandler implements Runnable{
     BufferedOutputStream bos = null;
     
     String threadName;
+    int requestNumber = 60;
     
     public ConnHandler(Socket so, int number) {
     	this.sock = so;
@@ -43,24 +44,32 @@ public class ConnHandler implements Runnable{
 	public void run() {
 		while(true) {
 			try {
-				String newfile = "C:/weather/"+threadName+"_"+getCurrentTimeStamp()+".xml";
-				byte [] mybytearray  = new byte [FILE_SIZE];
 				InputStream is = sock.getInputStream();
-				fos = new FileOutputStream(newfile);
-				bos = new BufferedOutputStream(fos);
+				//String newfile = "D:/weather/"+threadName+"_"+getCurrentTimeStamp()+".xml";
+				byte [] mybytearray  = new byte [FILE_SIZE];
 				bytesRead = is.read(mybytearray,0,mybytearray.length);
-				bos.write(mybytearray, 0 , bytesRead);
+				if(requestNumber >= 60) {
+					requestNumber = 1;
+					
+					String newfile = "D:/weather/"+threadName+"_"+getCurrentTimeStamp()+".xml";
+					fos = new FileOutputStream(newfile);
+					bos = new BufferedOutputStream(fos);
+					//bytesRead = is.read(mybytearray,0,mybytearray.length);
+					bos.write(mybytearray, 0 , bytesRead);
+					
+					mybytearray = null;
+					bos.flush();
+					fos.flush();
+					fos.close();
+					bos.close();
+				} else {
+					requestNumber++;
+					//System.out.println("Request Number: " + requestNumber);
+				}
 				//System.out.println("File " + newfile + " downloaded (" + bytesRead + " bytes read)");
-            
-				bos.flush();
-				fos.flush();
-				fos.close();
-				bos.close();
-				TimeUnit.SECONDS.sleep(60);
+				
+				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
