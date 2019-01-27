@@ -15,7 +15,7 @@ public class CountryFilter {
 	public ArrayList<String> ids = new ArrayList<String>();
 	
 	public void testFile() {
-		try (BufferedReader br = new BufferedReader(new FileReader("D:\\Users\\levis\\Documents\\GitHub\\WeatherApp\\SimpleFileServer\\src\\station_country_data.dat"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\levis\\Documents\\GitHub\\WeatherApp\\SimpleFileServer\\src\\station_country_data.dat"))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				// process the line.

@@ -1,16 +1,27 @@
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class ConnHandler implements Runnable{
 	
@@ -51,7 +62,20 @@ public class ConnHandler implements Runnable{
 				if(requestNumber >= 60) {
 					requestNumber = 1;
 					
-					String newfile = "D:/weather/"+threadName+"_"+getCurrentTimeStamp()+".xml";
+					String timestamp = getCurrentTimeStamp();
+					
+					System.out.println("Threadname:" + threadName);
+					
+					if(threadName == "0") {
+						PrintWriter writer = new PrintWriter("C:/weather/US/"+timestamp+".txt", "UTF-8");
+						writer.close();
+						System.out.println("USFILE");
+					}
+					
+					PrintWriter writer = new PrintWriter("C:/weather/US/"+timestamp+".xml");
+					writer.close();
+					
+					String newfile = "C:/weather/"+threadName+"_"+timestamp+".xml";
 					fos = new FileOutputStream(newfile);
 					bos = new BufferedOutputStream(fos);
 					//bytesRead = is.read(mybytearray,0,mybytearray.length);
@@ -62,6 +86,8 @@ public class ConnHandler implements Runnable{
 					fos.flush();
 					fos.close();
 					bos.close();
+					
+					filterData(newfile);
 				} else {
 					requestNumber++;
 					//System.out.println("Request Number: " + requestNumber);
@@ -74,6 +100,31 @@ public class ConnHandler implements Runnable{
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private void filterData(String filename) {
+		try {
+			File inputFile = new File(filename);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        	Document doc = dBuilder.parse(inputFile);
+        	doc.getDocumentElement().normalize();
+        	
+        	System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+        	NodeList nList = doc.getElementsByTagName("MEASUREMENT");
+        	
+        	for (int temp = 0; temp < nList.getLength(); temp++) {
+                Node nNode = nList.item(temp);
+                
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                   Element eElement = (Element) nNode;
+                   //System.out.println("Station ID: " + eElement.getElementsByTagName("STN").item(0).getTextContent());
+                   //System.out.println("Date: " + eElement.getElementsByTagName("DATE").item(0).getTextContent());
+                }
+             }
+		} catch (Exception e) {
+	         e.printStackTrace();
+	      }
 	}
 
 }

@@ -3,6 +3,7 @@ import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,16 +11,13 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 public class SimpleFileServer {
 
   public final static int SOCKET_PORT = 5056;  // you may change this
-  
-  public static final String
-  FILE_TO_RECEIVED = "D:/weather/weather.xml";  // you may change this, I give a
-                                                       // different name because i don't want to
-                                                       // overwrite the one used by server...
 
   public final static int FILE_SIZE = 5000; // file size temporary hard coded
                                           // should bigger than the file to be downloaded
@@ -27,11 +25,30 @@ public class SimpleFileServer {
   public static String getCurrentTimeStamp() {
 	    return new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(new Date());
 	}
+  
+  public static ArrayList<String> CreateCountryLists(String country) {
+	  ArrayList<String> list = new ArrayList<String>();
+	  try {
+		Scanner s = new Scanner(new File("C:\\Users\\Levi\\Documents\\GitHub\\WeatherApp\\SimpleFileServer\\src\\countrylists\\"+country+".txt"));
+	  	while (s.hasNext()){
+	      list.add(s.next());
+	  	}
+	  	s.close();
+	  	} catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	  	}
+	  	return list;
+  }
+  
+  public static ArrayList<String> USlist = CreateCountryLists("US");
 
   public static void main (String [] args ) throws IOException {
 	  
-	CountryFilter filter1 = new CountryFilter();
-	filter1.testFile();
+	  System.out.println(USlist);
+	  
+	//CountryFilter filter1 = new CountryFilter();
+	//filter1.testFile();
 	
     ServerSocket servsock = null;
     Socket sock = null;
