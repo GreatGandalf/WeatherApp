@@ -47,6 +47,12 @@ public class ConnHandler implements Runnable{
     private ArrayList<String> USlist = SimpleFileServer.USlist;
     private ArrayList<String> FRlist = SimpleFileServer.FRlist;
     private ArrayList<String> UKlist = SimpleFileServer.UKlist;
+    private ArrayList<String> GElist = SimpleFileServer.GElist;
+    private ArrayList<String> BAlist = SimpleFileServer.BAlist;
+    private ArrayList<String> BUlist = SimpleFileServer.BUlist;
+    private ArrayList<String> CHlist = SimpleFileServer.CHlist;
+    private ArrayList<String> INlist = SimpleFileServer.INlist;
+    private ArrayList<String> SPlist = SimpleFileServer.SPlist;
     
     public ConnHandler(Socket so, int number) {
     	this.sock = so;
@@ -70,15 +76,6 @@ public class ConnHandler implements Runnable{
 					requestNumber = 1;
 					
 					String timestamp = getCurrentTimeStamp();
-					
-					System.out.println("Threadname:" + threadName);
-					
-					if(threadName == "0") {
-						PrintWriter writer = new PrintWriter("C:/weather/US/"+timestamp+".txt", "UTF-8");
-						writer.close();
-						System.out.println("USFILE");
-					}
-					
 					
 					String newfile = "C:/weather/"+threadName+"_"+timestamp+".xml";
 					fos = new FileOutputStream(newfile);
@@ -131,6 +128,18 @@ public class ConnHandler implements Runnable{
                 	   writeFile("US",eElement,timestamp);
                    } else if (UKlist.contains(station)) {
                 	   writeFile("UK",eElement,timestamp);
+                   } else if (GElist.contains(station)) {
+                	   writeFile("GE",eElement,timestamp);
+                   } else if (BAlist.contains(station)) {
+                	   writeFile("BA",eElement,timestamp);
+                   } else if (BUlist.contains(station)) {
+                	   writeFile("BU",eElement,timestamp);
+                   } else if (CHlist.contains(station)) {
+                	   writeFile("CH",eElement,timestamp);
+                   } else if (INlist.contains(station)) {
+                	   writeFile("IN",eElement,timestamp);
+                   } else if (SPlist.contains(station)) {
+                	   writeFile("SP",eElement,timestamp);
                    }
                    
                 }

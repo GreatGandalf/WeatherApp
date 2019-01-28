@@ -44,6 +44,12 @@ public class SimpleFileServer {
   public static ArrayList<String> USlist = CreateCountryLists("US");
   public static ArrayList<String> FRlist = CreateCountryLists("FR");
   public static ArrayList<String> UKlist = CreateCountryLists("UK");
+  public static ArrayList<String> GElist = CreateCountryLists("GE");
+  public static ArrayList<String> BAlist = CreateCountryLists("BA");
+  public static ArrayList<String> BUlist = CreateCountryLists("BU");
+  public static ArrayList<String> CHlist = CreateCountryLists("CH");
+  public static ArrayList<String> INlist = CreateCountryLists("IN");
+  public static ArrayList<String> SPlist = CreateCountryLists("SP");
 
   public static void main (String [] args ) throws IOException {
 	  
