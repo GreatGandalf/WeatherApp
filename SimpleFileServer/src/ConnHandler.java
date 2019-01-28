@@ -160,20 +160,22 @@ public class ConnHandler implements Runnable{
 		String station = eElement.getElementsByTagName("STN").item(0).getTextContent();
 		try {
 	   PrintWriter writer = new PrintWriter("C:/weather/"+country+"/"+station+"_"+timestamp+".xml");
+	   writer.println("<DATA>");
 	   writer.println("<STN>"+station+"</STN>");
   	   writer.println("<DATE>"+eElement.getElementsByTagName("DATE").item(0).getTextContent()+"</DATE>");
   	   writer.println("<TIME>"+eElement.getElementsByTagName("TIME").item(0).getTextContent()+"</TIME>");
   	   writer.println("<TEMP>"+eElement.getElementsByTagName("TEMP").item(0).getTextContent()+"</TEMP>");
-  	   writer.println("<DEWP>"+eElement.getElementsByTagName("DEWP").item(0).getTextContent()+"</DEWP>");
-  	   writer.println("<STP>"+eElement.getElementsByTagName("STP").item(0).getTextContent()+"</STP>");
-  	   writer.println("<SLP>"+eElement.getElementsByTagName("SLP").item(0).getTextContent()+"</SLP>");
-  	   writer.println("<VISIB>"+eElement.getElementsByTagName("VISIB").item(0).getTextContent()+"</VISIB>");
-  	   writer.println("<WDSP>"+eElement.getElementsByTagName("WDSP").item(0).getTextContent()+"</WDSP>");
+//  	   writer.println("<DEWP>"+eElement.getElementsByTagName("DEWP").item(0).getTextContent()+"</DEWP>");
+//  	   writer.println("<STP>"+eElement.getElementsByTagName("STP").item(0).getTextContent()+"</STP>");
+//  	   writer.println("<SLP>"+eElement.getElementsByTagName("SLP").item(0).getTextContent()+"</SLP>");
+//  	   writer.println("<VISIB>"+eElement.getElementsByTagName("VISIB").item(0).getTextContent()+"</VISIB>");
+//  	   writer.println("<WDSP>"+eElement.getElementsByTagName("WDSP").item(0).getTextContent()+"</WDSP>");
   	   writer.println("<PRCP>"+eElement.getElementsByTagName("PRCP").item(0).getTextContent()+"</PRCP>");
-  	   writer.println("<SNDP>"+eElement.getElementsByTagName("SNDP").item(0).getTextContent()+"</SNDP>");
-  	   writer.println("<FRSHTT>"+eElement.getElementsByTagName("FRSHTT").item(0).getTextContent()+"</FRSHTT>");
-  	   writer.println("<CLDC>"+eElement.getElementsByTagName("CLDC").item(0).getTextContent()+"</CLDC>");
-  	   writer.println("<WNDDIR>"+eElement.getElementsByTagName("WNDDIR").item(0).getTextContent()+"</WNDDIR>");
+//  	   writer.println("<SNDP>"+eElement.getElementsByTagName("SNDP").item(0).getTextContent()+"</SNDP>");
+//  	   writer.println("<FRSHTT>"+eElement.getElementsByTagName("FRSHTT").item(0).getTextContent()+"</FRSHTT>");
+//  	   writer.println("<CLDC>"+eElement.getElementsByTagName("CLDC").item(0).getTextContent()+"</CLDC>");
+//  	   writer.println("<WNDDIR>"+eElement.getElementsByTagName("WNDDIR").item(0).getTextContent()+"</WNDDIR>");
+  	   writer.println("</DATA>");
   	   writer.close();
 		} catch (Exception e) {
 	         e.printStackTrace();
