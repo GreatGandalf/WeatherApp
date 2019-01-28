@@ -42,6 +42,8 @@ public class SimpleFileServer {
   }
   
   public static ArrayList<String> USlist = CreateCountryLists("US");
+  public static ArrayList<String> FRlist = CreateCountryLists("FR");
+  public static ArrayList<String> UKlist = CreateCountryLists("UK");
 
   public static void main (String [] args ) throws IOException {
 	  

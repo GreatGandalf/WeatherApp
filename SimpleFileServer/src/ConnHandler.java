@@ -10,7 +10,10 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -40,6 +43,10 @@ public class ConnHandler implements Runnable{
     
     String threadName;
     int requestNumber = 60;
+    
+    private ArrayList<String> USlist = SimpleFileServer.USlist;
+    private ArrayList<String> FRlist = SimpleFileServer.FRlist;
+    private ArrayList<String> UKlist = SimpleFileServer.UKlist;
     
     public ConnHandler(Socket so, int number) {
     	this.sock = so;
@@ -72,8 +79,6 @@ public class ConnHandler implements Runnable{
 						System.out.println("USFILE");
 					}
 					
-					PrintWriter writer = new PrintWriter("C:/weather/US/"+timestamp+".xml");
-					writer.close();
 					
 					String newfile = "C:/weather/"+threadName+"_"+timestamp+".xml";
 					fos = new FileOutputStream(newfile);
@@ -87,7 +92,7 @@ public class ConnHandler implements Runnable{
 					fos.close();
 					bos.close();
 					
-					filterData(newfile);
+					filterData(newfile,timestamp);
 				} else {
 					requestNumber++;
 					//System.out.println("Request Number: " + requestNumber);
@@ -102,7 +107,7 @@ public class ConnHandler implements Runnable{
 		}
 	}
 	
-	private void filterData(String filename) {
+	private void filterData(String filename,String timestamp) {
 		try {
 			File inputFile = new File(filename);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -110,18 +115,57 @@ public class ConnHandler implements Runnable{
         	Document doc = dBuilder.parse(inputFile);
         	doc.getDocumentElement().normalize();
         	
-        	System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
         	NodeList nList = doc.getElementsByTagName("MEASUREMENT");
+        	
+        	boolean write = false;
         	
         	for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
                 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                    Element eElement = (Element) nNode;
-                   //System.out.println("Station ID: " + eElement.getElementsByTagName("STN").item(0).getTextContent());
-                   //System.out.println("Date: " + eElement.getElementsByTagName("DATE").item(0).getTextContent());
+                   String station = eElement.getElementsByTagName("STN").item(0).getTextContent();
+                   if(FRlist.contains(station)) {
+                	   writeFile("FR",eElement,timestamp);
+                   } else if (USlist.contains(station)) {
+                	   writeFile("US",eElement,timestamp);
+                   } else if (UKlist.contains(station)) {
+                	   writeFile("UK",eElement,timestamp);
+                   }
+                   
                 }
              }
+		} catch (Exception e) {
+	         e.printStackTrace();
+	      }
+		
+		
+		try {
+			Files.delete(Paths.get(filename));
+		} catch (Exception e) {
+	         e.printStackTrace();
+	      }
+	}
+	
+	private void writeFile(String country,Element eElement,String timestamp) {
+		String station = eElement.getElementsByTagName("STN").item(0).getTextContent();
+		try {
+	   PrintWriter writer = new PrintWriter("C:/weather/"+country+"/"+station+"_"+timestamp+".xml");
+	   writer.println("<STN>"+station+"</STN>");
+  	   writer.println("<DATE>"+eElement.getElementsByTagName("DATE").item(0).getTextContent()+"</DATE>");
+  	   writer.println("<TIME>"+eElement.getElementsByTagName("TIME").item(0).getTextContent()+"</TIME>");
+  	   writer.println("<TEMP>"+eElement.getElementsByTagName("TEMP").item(0).getTextContent()+"</TEMP>");
+  	   writer.println("<DEWP>"+eElement.getElementsByTagName("DEWP").item(0).getTextContent()+"</DEWP>");
+  	   writer.println("<STP>"+eElement.getElementsByTagName("STP").item(0).getTextContent()+"</STP>");
+  	   writer.println("<SLP>"+eElement.getElementsByTagName("SLP").item(0).getTextContent()+"</SLP>");
+  	   writer.println("<VISIB>"+eElement.getElementsByTagName("VISIB").item(0).getTextContent()+"</VISIB>");
+  	   writer.println("<WDSP>"+eElement.getElementsByTagName("WDSP").item(0).getTextContent()+"</WDSP>");
+  	   writer.println("<PRCP>"+eElement.getElementsByTagName("PRCP").item(0).getTextContent()+"</PRCP>");
+  	   writer.println("<SNDP>"+eElement.getElementsByTagName("SNDP").item(0).getTextContent()+"</SNDP>");
+  	   writer.println("<FRSHTT>"+eElement.getElementsByTagName("FRSHTT").item(0).getTextContent()+"</FRSHTT>");
+  	   writer.println("<CLDC>"+eElement.getElementsByTagName("CLDC").item(0).getTextContent()+"</CLDC>");
+  	   writer.println("<WNDDIR>"+eElement.getElementsByTagName("WNDDIR").item(0).getTextContent()+"</WNDDIR>");
+  	   writer.close();
 		} catch (Exception e) {
 	         e.printStackTrace();
 	      }
