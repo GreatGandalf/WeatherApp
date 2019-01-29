@@ -29,7 +29,7 @@ public class SimpleFileServer {
   public static ArrayList<String> CreateCountryLists(String country) {
 	  ArrayList<String> list = new ArrayList<String>();
 	  try {
-		Scanner s = new Scanner(new File("C:\\Users\\Levi\\Documents\\GitHub\\WeatherApp\\SimpleFileServer\\src\\countrylists\\"+country+".txt"));
+		Scanner s = new Scanner(new File("D:\\Users\\Levis\\Documents\\GitHub\\WeatherApp\\SimpleFileServer\\src\\countrylists\\"+country+".txt"));
 	  	while (s.hasNext()){
 	      list.add(s.next());
 	  	}
@@ -52,11 +52,6 @@ public class SimpleFileServer {
   public static ArrayList<String> SPlist = CreateCountryLists("SP");
 
   public static void main (String [] args ) throws IOException {
-	  
-	  System.out.println(USlist);
-	  
-	//CountryFilter filter1 = new CountryFilter();
-	//filter1.testFile();
 	
     ServerSocket servsock = null;
     Socket sock = null;

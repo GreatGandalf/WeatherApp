@@ -77,7 +77,7 @@ public class ConnHandler implements Runnable{
 					
 					String timestamp = getCurrentTimeStamp();
 					
-					String newfile = "C:/weather/"+threadName+"_"+timestamp+".xml";
+					String newfile = "D:/weather/"+threadName+"_"+timestamp+".xml";
 					fos = new FileOutputStream(newfile);
 					bos = new BufferedOutputStream(fos);
 					//bytesRead = is.read(mybytearray,0,mybytearray.length);
@@ -159,7 +159,7 @@ public class ConnHandler implements Runnable{
 	private void writeFile(String country,Element eElement,String timestamp) {
 		String station = eElement.getElementsByTagName("STN").item(0).getTextContent();
 		try {
-	   PrintWriter writer = new PrintWriter("C:/weather/"+country+"/"+station+"_"+timestamp+".xml");
+	   PrintWriter writer = new PrintWriter("D:/weather/"+country+"/"+station+"_"+timestamp+".xml");
 	   writer.println("<DATA>");
 	   writer.println("<STN>"+station+"</STN>");
   	   writer.println("<DATE>"+eElement.getElementsByTagName("DATE").item(0).getTextContent()+"</DATE>");
