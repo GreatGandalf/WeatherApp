@@ -29,7 +29,7 @@ public class SimpleFileServer {
   public static ArrayList<String> CreateCountryLists(String country) {
 	  ArrayList<String> list = new ArrayList<String>();
 	  try {
-		Scanner s = new Scanner(new File("D:\\Users\\Levis\\Documents\\GitHub\\WeatherApp\\SimpleFileServer\\src\\countrylists\\"+country+".txt"));
+		Scanner s = new Scanner(new File("C:\\Users\\Levi\\Documents\\GitHub\\WeatherApp\\SimpleFileServer\\src\\countrylists\\"+country+".txt"));
 	  	while (s.hasNext()){
 	      list.add(s.next());
 	  	}
@@ -50,6 +50,7 @@ public class SimpleFileServer {
   public static ArrayList<String> CHlist = CreateCountryLists("CH");
   public static ArrayList<String> INlist = CreateCountryLists("IN");
   public static ArrayList<String> SPlist = CreateCountryLists("SP");
+  
 
   public static void main (String [] args ) throws IOException {
 	

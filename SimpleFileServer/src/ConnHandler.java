@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -42,7 +43,9 @@ public class ConnHandler implements Runnable{
     BufferedOutputStream bos = null;
     
     String threadName;
-    int requestNumber = 60;
+    int requestNumber = -100;
+    
+    SFTP thing;
     
     private ArrayList<String> USlist = SimpleFileServer.USlist;
     private ArrayList<String> FRlist = SimpleFileServer.FRlist;
@@ -57,6 +60,11 @@ public class ConnHandler implements Runnable{
     public ConnHandler(Socket so, int number) {
     	this.sock = so;
     	this.threadName = String.valueOf(number);
+    	try {
+    	    this.thing = new SFTP();
+    		} catch (Exception e) {
+    	       e.printStackTrace();
+    	    }
     }
 	
 	
@@ -77,7 +85,7 @@ public class ConnHandler implements Runnable{
 					
 					String timestamp = getCurrentTimeStamp();
 					
-					String newfile = "D:/weather/"+threadName+"_"+timestamp+".xml";
+					String newfile = "C:/weather/"+threadName+"_"+timestamp+".xml";
 					fos = new FileOutputStream(newfile);
 					bos = new BufferedOutputStream(fos);
 					//bytesRead = is.read(mybytearray,0,mybytearray.length);
@@ -159,7 +167,8 @@ public class ConnHandler implements Runnable{
 	private void writeFile(String country,Element eElement,String timestamp) {
 		String station = eElement.getElementsByTagName("STN").item(0).getTextContent();
 		try {
-	   PrintWriter writer = new PrintWriter("D:/weather/"+country+"/"+station+"_"+timestamp+".xml");
+			String filename = "C:/weather/"+country+"/"+station+"_"+timestamp+".xml";
+	   PrintWriter writer = new PrintWriter(filename);
 	   writer.println("<DATA>");
 	   writer.println("<STN>"+station+"</STN>");
   	   writer.println("<DATE>"+eElement.getElementsByTagName("DATE").item(0).getTextContent()+"</DATE>");
@@ -177,9 +186,25 @@ public class ConnHandler implements Runnable{
 //  	   writer.println("<WNDDIR>"+eElement.getElementsByTagName("WNDDIR").item(0).getTextContent()+"</WNDDIR>");
   	   writer.println("</DATA>");
   	   writer.close();
+  	   
+  	   String static_file = "C:/weather/"+country+"/"+station+".xml";
+  	   
+  	  FileChannel src = new FileInputStream(filename).getChannel();
+  	  FileChannel dest = new FileOutputStream(static_file).getChannel();
+  	  dest.transferFrom(src, 0, src.size());
+  	  
+  	  src.close();
+  	  dest.close();
+  	   
+  	   GiveFile(filename, country);
+  	 GiveFile(static_file, country);
 		} catch (Exception e) {
 	         e.printStackTrace();
 	      }
+	}
+	
+	private void GiveFile(String filename, String country) {
+		thing.SendFile(filename, country);
 	}
 
 }
