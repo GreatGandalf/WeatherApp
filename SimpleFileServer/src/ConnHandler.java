@@ -43,7 +43,7 @@ public class ConnHandler implements Runnable{
     BufferedOutputStream bos = null;
     
     String threadName;
-    int requestNumber = -100;
+    int requestNumber = 40;
     
     SFTP thing;
     
@@ -196,15 +196,12 @@ public class ConnHandler implements Runnable{
   	  src.close();
   	  dest.close();
   	   
-  	   GiveFile(filename, country);
-  	 GiveFile(static_file, country);
+  	  thing.SendFile(filename, country, false);
+  	  thing.SendFile(static_file, country, true);
 		} catch (Exception e) {
 	         e.printStackTrace();
 	      }
 	}
-	
-	private void GiveFile(String filename, String country) {
-		thing.SendFile(filename, country);
-	}
+
 
 }

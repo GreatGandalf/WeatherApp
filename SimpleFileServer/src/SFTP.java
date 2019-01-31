@@ -48,11 +48,15 @@ public class SFTP {
 		//		System.out.println("Closed. Bye!");
 	}
 
-	public void SendFile(String filename, String country) {
+	public void SendFile(String filename, String country,boolean special) {
 		try {
 
 			//push sftp
-			channel.put(filename,"/var/www/html/weather/"+country+"/");
+			if(special == true) {
+				channel.put(filename,"/var/www/html/weather/static/");
+			} else {
+				channel.put(filename,"/var/www/html/weather/"+country+"/");
+			}
 			System.out.println("File sent");
 			
 			Files.delete(Paths.get(filename));
